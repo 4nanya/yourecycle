@@ -5,10 +5,9 @@ import { Camera } from 'expo-camera';
 import { shareAsync } from 'expo-sharing';
 import callGoogleVisionAsync from "./googleCloudVisionHelper";
 //import MissingComponent from "./foodanalysis"
-import findFood from "./FindFood";
+import findTrash from "./FindTrash";
 import logo from "./assets/truefoodButton.png"
-import Recommendation from './FoodRecommendation';
-import findFoodArray from './FindFoodArray';
+//import Recommendation from './FoodRecommendation';
 
 
 export default function App() {
@@ -79,101 +78,25 @@ export default function App() {
       });
     };
 
-    let values = findFood(scannedvalues);
+    let values = findTrash(scannedvalues);
     //let valuesArray = findFoodArray(scannedvalues);
-    const valuesArray = findFoodArray(scannedvalues); 
-    if (showRecommendation){
-      console.log("====>Inside showrecommendation=true method");
-      //const cars = ["BMW", "Volvo", "Saab", "Ford", "Fiat", "Audi"];
-      console.log("ARRAY OF VALUES: "+valuesArray);
 
-
-      return (
-        <SafeAreaView style={styles.container}>
-          <Text style={styles.recsheading}>Recommendations</Text>
-            {valuesArray.map((item,index)=>{
-              if (item=='Vegetables'){
-                return (
-                    //console.log(item);
-                      <View style= {styles.textbox} key={index}>     
-
-                          
-                          <Text style={styles.recommendingText} key={index}>{item} {"\n -"} {Vegetables[Math.floor(Math.random()*Vegetables.length)]}</Text>
-                          
-                      </View>
-                    );
-            }
-            if (item=='Protein'){
-              return (
-                  //console.log(item);
-                    <View style= {styles.textbox} key={index}>     
-
-                       
-                        {/* <Text style={styles.recommendingText} key={index}>{item} {"\n -"} {Protein[Math.floor(Math.random()*Protein.length)]}</Text> */}
-                        <Text style={styles.recommendingText} key={index}>{item} {"\n -"} Eggs</Text>
-                    </View>
-                  );
-          }
-          if (item=='Fruit'){
-            return (
-                //console.log(item);
-                  <View style= {styles.textbox} key={index}>     
-
-                      
-                      {/* <Text style={styles.recommendingText} key={index}>{item} {"\n -"} {Fruits[Math.floor(Math.random()*Fruits.length)]}</Text> */}
-                      <Text style={styles.recommendingText} key={index}>{item} {"\n -"} Apple</Text>
-                  </View>
-                );
-        }
-        if (item=='Grains'){
-          return (
-              //console.log(item);
-                <View style= {styles.textbox} key={index}>     
-
-                    
-                    <Text style={styles.recommendingText} key={index}>{item} {"\n -"} {Grains[Math.floor(Math.random()*Grains.length)]}</Text>
-                    
-                </View>
-              );
-      }
-      if (item=='Dairy'){
-        return (
-            //console.log(item);
-              <View style= {styles.textbox} key={index}>     
-
-                  
-                  {/* <Text style={styles.recommendingText} key={index}>{item} {"\n -"} {Dairy[Math.floor(Math.random()*Dairy.length)]}</Text> */}
-                  <Text style={styles.recommendingText} key={index}>{item} {"\n -"} Yogurt</Text>
-
-                  
-              </View>
-            );
-    }
-})}
-           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-          <View style= {styles.textbox}>
-          <Button style = {styles.sharebutton} title="Go Back" onPress={() => setShowrecommendation(false)} />
-          </View>
-          </SafeAreaView>
-      );
-    }
-    else {
       return (
         
         <SafeAreaView style={styles.container}>
           <View style= {styles.textbox}>
-          <Text style={styles.presentText}>{values[0]} </Text>
-          <Text style={styles.missingText}>{values[1]}</Text>
+          <Text style={styles.recommendingText}>Your item is:  </Text>
+          <Text style={styles.recommendingText}>{values} </Text>
           </View>
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
           <View style= {styles.textbox}>
           <Button style = {styles.sharebutton} title="Share" onPress={sharePic} />
-          <Button style = {styles.sharebutton} title="Recommendations" onPress={() => setShowrecommendation(true)} />
+          {/* <Button style = {styles.sharebutton} title="Recommendations" onPress={() => setShowrecommendation(true)} /> */}
           <Button style = {styles.sharebutton} title="Start Again" onPress={() => reset()} />
           </View>
         </SafeAreaView>
       );
-    }
+    
   }
 
   console.log("Outside photo=true method");
@@ -246,26 +169,8 @@ const styles = StyleSheet.create({
     height: 150
 
   },
-  presentText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: "green", 
-    height: 50,
-    alignSelf: "left",
-    paddingHorizontal: 20
-
-  },
-  missingText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: "indianred", 
-    height: 50,
-    alignSelf: "left",
-    paddingHorizontal: 20,
-
-  },
   recommendingText: {
-    fontSize: 15,
+    fontSize: 30,
     fontWeight: 'bold',
     color: "cornflowerblue", 
     height: 50,
