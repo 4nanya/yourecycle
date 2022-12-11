@@ -139,6 +139,7 @@ export default function App() {
     };
 
     let values = findTrash(scannedvalues);
+    console.log("Values -", values);
     //let valuesArray = findFoodArray(scannedvalues);
 
     if (showRecommendation){

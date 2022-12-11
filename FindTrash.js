@@ -39,8 +39,8 @@ for (let i = 0; i < scanLen; i++) {
      return("Compost"); 
   }
   }
-  return("Trash");
 } 
+return("Trash");
 
 }
 export default findTrash;
