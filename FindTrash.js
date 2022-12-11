@@ -5,8 +5,8 @@ console.log("ENTERING findTrash.js");
 console.log("scan -->", scan);
 
 // list of foods in the different food groups
-const rec = new Array("Paper");
-const fruit = new Array("Fruit", "Egg white","Animal product","Fried egg");
+const rec = new Array("Paper",'Plastic');
+const fruit = new Array("Fruit","Plant",'Herb');
 
 // the lengths
 scanLen = scan.length ; 

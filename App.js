@@ -6,7 +6,7 @@ import { shareAsync } from 'expo-sharing';
 import callGoogleVisionAsync from "./googleCloudVisionHelper";
 //import MissingComponent from "./foodanalysis"
 import findTrash from "./FindTrash";
-import logo from "./assets/truefoodButton.png"
+import logo from "./assets/logo.png"
 //import Recommendation from './FoodRecommendation';
 import * as Location from 'expo-location';
 
@@ -151,10 +151,11 @@ export default function App() {
           <View style={styles.space} />
           <View style={styles.space} />
           <View style={styles.space} />
-
-          <Text style={styles.titleText} >Your location:</Text>
-          <Text style={styles.titleText} >{displayCurrentAddress}</Text>
-          
+          <Text style={styles.titleText} >Local Information</Text>
+          <View style= {styles.textbox}>
+          <Text style={styles.sheading} >Location found: </Text>
+          <Text style={styles.recsheading} >{displayCurrentAddress}</Text>
+          </View>
           {senators.map((senator) => {
         //console.log(senator);
         //console.log({senator.id});
@@ -164,18 +165,25 @@ export default function App() {
           return (
             
             <View style= {styles.newbox}>
+            {/* <Text style={styles.infoText}></Text> */}
+            <Text style={styles.sheading} >Detailed Summary:</Text>
             <Text style={styles.infoText}>{displayCurrentAddress} has a an overall pollution index of {senator.pollution}. This is made up of
             three main indexes: carbon, air quality, and water quality. The carbon index, air quality, and water quality 
             of {displayCurrentAddress} are {senator.carbon}, {senator.aqi}, and {senator.water} respectively. These are measured in comparison to 
-            other cities in the area. {displayCurrentAddress} also has a trash level of {senator.trash}. By 
-            using our app and spreading awarnesss, you can help lower this amount. </Text>
+            other cities in the area. Additionaly, {displayCurrentAddress}'s trash level is {senator.trash}. </Text>
+            <View style={styles.space} />
+            <Text style={styles.infoTextBold}>By using our app and spreading awarnesss, you can help lower this amount. </Text>
             </View>
+            
           ); 
+          
       
       };
       })}
-
+      <View style={styles.space} />
       <Button style = {styles.sharebutton} title="Start Again" onPress={() => reset()} />
+      <View style={styles.space} />
+      <View style={styles.space} />
       <View style={styles.space} />
           </View>
     
@@ -213,7 +221,7 @@ export default function App() {
       <View style={styles.buttonContainer}>
         {/* <<Button title="Take Food Pic" onPress={takePic} />> */}
         <TouchableOpacity style = {styles.buttonContainer} activeOpacity = {0.5} onPress={takePic}>
-          <Image source = {logo} style = {{width: 100, length: 50, resizeMode: 'center'}} ></Image>
+          <Image source = {logo} style = {{width: 120, height: 120}} ></Image>
         </TouchableOpacity>
 
 
@@ -242,6 +250,18 @@ const senators = [
   water: "98.87",
 	aqi: "98.77",
   trash:"high"},
+  { id: "Oakland",
+  pollution: "54.23",
+  carbon: "56.31",
+  water: "97.90",
+	aqi: "96.47",
+  trash:"high"},
+  { id: "Sunnyvale",
+  pollution: "22.21",
+  carbon: "42.45",
+  water: "78.65",
+	aqi: "65.43",
+  trash:"medium"},
   
 ];
 const styles = StyleSheet.create({
@@ -258,9 +278,9 @@ const styles = StyleSheet.create({
     width: 400,
     backgroundColor:"white",
     borderColor: "#60A76D",
-    margin:5,
-    flexWrap:'wrap',
+    margin: 5,
     flex:1,
+   
  
   },
   textbox: {
@@ -289,7 +309,7 @@ const styles = StyleSheet.create({
   sharebutton: {
     backgroundColor: "khaki",
     color: "hotpink", 
-    borderColor: "#60A76D"
+    borderColor: "#60A76D",
   },
   baseText: {
     fontFamily: 'serif',
@@ -314,15 +334,25 @@ const styles = StyleSheet.create({
     alignSelf: "left",
     paddingHorizontal: 10,
   },
-  infoText: {
+  infoTextBold: {
     fontSize: 20,
     fontWeight: 'bold',
     color: "#1B5299", 
-    height: 50,
+    //height: 50,
     alignSelf: "left",
     paddingHorizontal: 10,
     paddingVertical: 10,
     flex:1,
+    
+  },
+  infoText: {
+    fontSize: 20,
+    color: "#1B5299", 
+    //height: 50,
+    alignSelf: "left",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    flex:0,
   },
 
   space: {
@@ -331,9 +361,17 @@ const styles = StyleSheet.create({
     //color: "white",
   },
   recsheading: {
-    fontSize: 30,
+    fontSize: 35,
+    fontWeight: 'bold',
+    color: "#090C9B",
+    alignSelf: "center"
+  },
+  sheading: {
+    fontSize: 25,
     fontWeight: 'bold',
     color: "#134611",
+    padding: 10,
+    alignSelf: "center"
   },
   
 });
