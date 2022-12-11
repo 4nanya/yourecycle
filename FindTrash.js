@@ -41,36 +41,6 @@ for (let i = 0; i < scanLen; i++) {
   }
 } 
 
-// variables for printing
-// var present_print = ""; 
-// var missing_print = ""; 
-// var presentLen = present.length ; 
-
-//count used to see if nothing is missing
-var count = 0;
-
-//printing the food groups  
-// for (let i = 0; i < presentLen; i++) {
-//       if (present[i] == true) {
-//         present_print = present_print + words[i] + ", ";
-//         count = count + 1;
-//       }
-//       else {
-//         missing_print = missing_print + words[i] + ", ";
-//       }
-//   }
-//   present_print="Present: \n"+present_print;
-//   //checking if there are any missing
-//   if (count == 5) {
-//     missing_print = "Wow! Good Job! What a healthy meal!"
-//   } else {
-//     missing_print = "Missing: " + "\n" + missing_print
-    
-//   }
-//   console.log("present_print ==>", present_print);
-//   console.log("missing_print ==>", missing_print);
-//   return [ present_print, missing_print];
-  
 }
 export default findTrash;
  
