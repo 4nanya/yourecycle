@@ -27,7 +27,7 @@ for (let i = 0; i < scanLen; i++) {
     var checker = scanner.localeCompare(check); //check if the one in the local list is equal to the list gotten from Google API
     if (checker == 0 ){
      //console.log("vegtable") ;
-     return ("recycable"); //if the food group is present, replace that group's space with true
+     return ("Recycable"); //if the food group is present, replace that group's space with true
     
   }
   }
@@ -36,9 +36,10 @@ for (let i = 0; i < scanLen; i++) {
     var checker = scanner.localeCompare(check);
     if (checker == 0 ){
      //console.log("fruit") ;
-     return("compost"); 
+     return("Compost"); 
   }
   }
+  return("Trash");
 } 
 
 }

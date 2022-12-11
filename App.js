@@ -81,6 +81,20 @@ export default function App() {
     let values = findTrash(scannedvalues);
     //let valuesArray = findFoodArray(scannedvalues);
 
+    if (showRecommendation){
+      console.log("====>Inside showrecommendation=true method");
+      //const cars = ["BMW", "Volvo", "Saab", "Ford", "Fiat", "Audi"];
+      //console.log("ARRAY OF VALUES: "+valuesArray);
+
+
+      return (
+        <SafeAreaView style={styles.container}>
+          <Text style={styles.recsheading}>Recommendations</Text>
+          </SafeAreaView>
+      );
+    }
+    else {
+
       return (
         
         <SafeAreaView style={styles.container}>
@@ -91,11 +105,12 @@ export default function App() {
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
           <View style= {styles.textbox}>
           <Button style = {styles.sharebutton} title="Share" onPress={sharePic} />
-          {/* <Button style = {styles.sharebutton} title="Recommendations" onPress={() => setShowrecommendation(true)} /> */}
+          <Button style = {styles.sharebutton} title="Recommendations" onPress={() => setShowrecommendation(true)} />
           <Button style = {styles.sharebutton} title="Start Again" onPress={() => reset()} />
           </View>
         </SafeAreaView>
       );
+    }
     
   }
 
