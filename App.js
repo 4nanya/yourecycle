@@ -8,6 +8,9 @@ import callGoogleVisionAsync from "./googleCloudVisionHelper";
 import findTrash from "./FindTrash";
 import logo from "./assets/truefoodButton.png"
 //import Recommendation from './FoodRecommendation';
+import * as Location from 'expo-location';
+
+
 
 
 export default function App() {
@@ -27,6 +30,63 @@ export default function App() {
   const Dairy = new Array("Milk","Yogurt","Cheese","Sour Cream","Latte","Ice Cream","Butter","Lassi");
   const arrayArray = [Vegetables, Protein, Fruits, Grains, Dairy];
 
+  const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
+  const [displayCurrentAddress, setDisplayCurrentAddress] = useState(
+    'Wait, we are fetching you location...'
+  );
+  useEffect(() => {
+    CheckIfLocationEnabled();
+  }, []);
+
+  const CheckIfLocationEnabled = async () => {
+    let enabled = await Location.hasServicesEnabledAsync();
+
+    if (!enabled) {
+      Alert.alert(
+        'Location Service not enabled',
+        'Please enable your location services to continue',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    } else {
+      setLocationServiceEnabled(enabled);
+    }
+  };
+  useEffect(() => {
+    CheckIfLocationEnabled();
+    GetCurrentLocation();
+  }, []);
+  
+  // create the handler method
+  
+  const GetCurrentLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+  
+    if (status !== 'granted') {
+      Alert.alert(
+        'Permission not granted',
+        'Allow the app to use location service.',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    }
+  
+    let { coords } = await Location.getCurrentPositionAsync();
+  
+    if (coords) {
+      const { latitude, longitude } = coords;
+      let response = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude
+      });
+      console.log(response);
+      for (let item of response) {
+        let address = `${item.city}`;
+        
+        setDisplayCurrentAddress(address);
+      }
+    }
+  };
   useEffect(() => {
     (async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -82,16 +142,47 @@ export default function App() {
     //let valuesArray = findFoodArray(scannedvalues);
 
     if (showRecommendation){
-      console.log("====>Inside showrecommendation=true method");
-      //const cars = ["BMW", "Volvo", "Saab", "Ford", "Fiat", "Audi"];
-      //console.log("ARRAY OF VALUES: "+valuesArray);
 
 
-      return (
-        <SafeAreaView style={styles.container}>
-          <Text style={styles.recsheading}>Recommendations</Text>
-          </SafeAreaView>
-      );
+      return(
+    
+    
+        <View style={styles.container}>
+          <View style={styles.space} />
+          <View style={styles.space} />
+          <View style={styles.space} />
+
+          <Text style={styles.titleText} >Your location:</Text>
+          <Text style={styles.titleText} >{displayCurrentAddress}</Text>
+          
+          {senators.map((senator) => {
+        //console.log(senator);
+        //console.log({senator.id});
+
+        if (senator.id==displayCurrentAddress){
+          console.log("Matchfound " , senator);
+          return (
+            
+            <View style= {styles.newbox}>
+            <Text style={styles.infoText}>{displayCurrentAddress} has a an overall pollution index of {senator.pollution}. This is made up of
+            three main indexes: carbon, air quality, and water quality. The carbon index, air quality, and water quality 
+            of {displayCurrentAddress} are {senator.carbon}, {senator.aqi}, and {senator.water} respectively. These are measured in comparison to 
+            other cities in the area. {displayCurrentAddress} also has a trash level of {senator.trash}. By 
+            using our app and spreading awarnesss, you can help lower this amount. </Text>
+            </View>
+          ); 
+      
+      };
+      })}
+
+      <Button style = {styles.sharebutton} title="Start Again" onPress={() => reset()} />
+      <View style={styles.space} />
+          </View>
+    
+
+        );
+
+
     }
     else {
 
@@ -105,7 +196,7 @@ export default function App() {
           <Image style={styles.preview} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
           <View style= {styles.textbox}>
           <Button style = {styles.sharebutton} title="Share" onPress={sharePic} />
-          <Button style = {styles.sharebutton} title="Recommendations" onPress={() => setShowrecommendation(true)} />
+          <Button style = {styles.sharebutton} title="Learn More Info" onPress={() => setShowrecommendation(true)} />
           <Button style = {styles.sharebutton} title="Start Again" onPress={() => reset()} />
           </View>
         </SafeAreaView>
@@ -131,25 +222,55 @@ export default function App() {
     </Camera>
   );
 }
-
+const senators = [
+  { id: "Fremont",
+  uid:"1",
+  pollution: "27.56",
+  carbon: "45.00",
+  water: "85.00",
+	aqi: "79.17",
+  trash:"medium"},
+  { id: "Milpitas",
+  pollution: "23.76",
+  carbon: "50.02",
+  water: "82.40",
+	aqi: "80.19",
+  trash:"high"},
+  { id: "San Jose",
+  pollution: "35.73",
+  carbon: "60.98",
+  water: "98.87",
+	aqi: "98.77",
+  trash:"high"},
+  
+];
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "#99cc00",
+    backgroundColor: "#D4FCC3",
     
+  },
+  newbox: {
+    borderWidth: 3,
+    borderRadius: 10,
+    width: 400,
+    backgroundColor:"white",
+    borderColor: "#60A76D",
+    margin:5,
+    flexWrap:'wrap',
+    flex:1,
+ 
   },
   textbox: {
     borderWidth: 3,
     borderRadius: 10,
     width: 400,
     backgroundColor:"white",
-    borderColor: '#336600',
+    borderColor: "#60A76D",
     margin:5,
-
-
-    
+  
   },
   buttonContainer: {
     //backgroundColor: '#fff',
@@ -162,13 +283,13 @@ const styles = StyleSheet.create({
     margin: 20,
     borderWidth: 4,
     borderRadius: 30,
-    borderColor: '#134611'
+    borderColor: "#60A76D"
   
   },
   sharebutton: {
     backgroundColor: "khaki",
     color: "hotpink", 
-    borderColor: '#134611'
+    borderColor: "#60A76D"
   },
   baseText: {
     fontFamily: 'serif',
@@ -180,21 +301,39 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 40,
     fontWeight: 'bold',
-    color: "hotpink", 
-    height: 150
+    color: "#60A76D", 
+
 
   },
+  
   recommendingText: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: "cornflowerblue", 
+    color: "#1B5299", 
     height: 50,
     alignSelf: "left",
     paddingHorizontal: 10,
+  },
+  infoText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: "#1B5299", 
+    height: 50,
+    alignSelf: "left",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    flex:1,
+  },
+
+  space: {
+    //width: 10, // or whatever size you need
+    height: 15,
+    //color: "white",
   },
   recsheading: {
     fontSize: 30,
     fontWeight: 'bold',
     color: "#134611",
   },
+  
 });
